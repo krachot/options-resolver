@@ -2,6 +2,8 @@
 
 This is a port of awesome Symfony component OptionsResolver.
 
+[![Build Status](https://travis-ci.org/krachot/options-resolver.svg?branch=master)](https://travis-ci.org/krachot/options-resolver)
+
 ## Installation
 
 ```
