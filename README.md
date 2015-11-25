@@ -17,7 +17,7 @@ import createResolver from 'options-resolver';
 
 const resolver = createResolver();
 resolver
-  .setDefault({
+  .setDefaults({
     'foo': 'bar',
     'baz': 'bam'
   })
