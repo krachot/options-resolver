@@ -76,7 +76,7 @@ export default function createResolver() {
   }
 
   function getMissingOptions() {
-    return _.difference(_.keys(state.required), _.keys(state.defaults));
+    return _.difference(Object.keys(state.required), Object.keys(state.defaults));
   }
 
   function setDefined(optionNames) {
@@ -100,7 +100,7 @@ export default function createResolver() {
   }
 
   function getDefinedOptions() {
-    return _.keys(state.defined);
+    return Object.keys(state.defined);
   }
 
   function setNormalizer(option, normalizer) {
@@ -109,7 +109,7 @@ export default function createResolver() {
     }
 
     if (!isDefined(option)) {
-      const definedOptions = _.keys(state.defined).join('", "');
+      const definedOptions = Object.keys(state.defined).join('", "');
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
@@ -125,7 +125,7 @@ export default function createResolver() {
     }
 
     if (!isDefined(option)) {
-      const definedOptions = _.keys(state.defined).join('", "');
+      const definedOptions = Object.keys(state.defined).join('", "');
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
@@ -141,7 +141,7 @@ export default function createResolver() {
     }
 
     if (!isDefined(option)) {
-      const definedOptions = _.keys(state.defined).join('", "');
+      const definedOptions = Object.keys(state.defined).join('", "');
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
@@ -166,7 +166,7 @@ export default function createResolver() {
     }
 
     if (!isDefined(option)) {
-      const definedOptions = _.keys(state.defined).join('", "');
+      const definedOptions = Object.keys(state.defined).join('", "');
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
@@ -182,7 +182,7 @@ export default function createResolver() {
     }
 
     if (!isDefined(option)) {
-      const definedOptions = _.keys(state.defined).join('", "');
+      const definedOptions = Object.keys(state.defined).join('", "');
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
@@ -300,7 +300,7 @@ export default function createResolver() {
 
     if (!clone.defaults.hasOwnProperty(option)) {
       if (!clone.defined.hasOwnProperty(option) || null === clone.defined[option]) {
-        const definedOptions = _.keys(clone.defined).join('", "');
+        const definedOptions = Object.keys(clone.defined).join('", "');
         throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
       }
 
