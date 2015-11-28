@@ -50,7 +50,7 @@ export default function createResolver() {
       throw new Error('Options cannot be made required from a lazy option or normalizer.');
     }
 
-    if (!_.isArray(optionNames)) {
+    if (!Array.isArray(optionNames)) {
       optionNames = [optionNames];
     }
 
@@ -84,7 +84,7 @@ export default function createResolver() {
       throw new Error('Options cannot be defined from a lazy option or normalizer.');
     }
 
-    if (!_.isArray(optionNames)) {
+    if (!Array.isArray(optionNames)) {
       optionNames = [optionNames];
     }
 
@@ -129,7 +129,7 @@ export default function createResolver() {
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
-    state.allowedValues[option] = _.isArray(values) ? values : [values];
+    state.allowedValues[option] = Array.isArray(values) ? values : [values];
     state.resolved = _.omit(state.resolved, option);
 
     return this;
@@ -145,7 +145,7 @@ export default function createResolver() {
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
-    if (!_.isArray(values)) {
+    if (!Array.isArray(values)) {
       values = [values];
     }
 
@@ -170,7 +170,7 @@ export default function createResolver() {
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
-    state.allowedTypes[option] = _.isArray(types) ? types : [types];
+    state.allowedTypes[option] = Array.isArray(types) ? types : [types];
     state.resolved = _.omit(state.resolved, option);
 
     return this;
@@ -186,7 +186,7 @@ export default function createResolver() {
       throw new Error(`The option "${option}" does not exist. Defined options are : "${definedOptions}"`);
     }
 
-    if (!_.isArray(types)) {
+    if (!Array.isArray(types)) {
       types = [types];
     }
 
