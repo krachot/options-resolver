@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import difference from 'lodash/array/difference';
+import { merge, omit } from 'lodash/object';
+import lang from 'lodash/lang';
+import sortBy from 'lodash/collection/sortBy';
 
 export default function createResolver() {
   var state = {
@@ -76,7 +79,7 @@ export default function createResolver() {
   }
 
   function getMissingOptions() {
-    return _.difference(Object.keys(state.required), Object.keys(state.defaults));
+    return difference(Object.keys(state.required), Object.keys(state.defaults));
   }
 
   function setDefined(optionNames) {
@@ -114,7 +117,7 @@ export default function createResolver() {
     }
 
     state.normalizers[option] = normalizer;
-    state.resolved = _.omit(state.resolved, option);
+    state.resolved = omit(state.resolved, option);
 
     return this;
   }
@@ -130,7 +133,7 @@ export default function createResolver() {
     }
 
     state.allowedValues[option] = Array.isArray(values) ? values : [values];
-    state.resolved = _.omit(state.resolved, option);
+    state.resolved = omit(state.resolved, option);
 
     return this;
   }
@@ -155,7 +158,7 @@ export default function createResolver() {
       state.allowedValues[option] = [...state.allowedValues[option], ...values];
     }
 
-    state.resolved = _.omit(state.resolved, option);
+    state.resolved = omit(state.resolved, option);
 
     return this;
   }
@@ -171,7 +174,7 @@ export default function createResolver() {
     }
 
     state.allowedTypes[option] = Array.isArray(types) ? types : [types];
-    state.resolved = _.omit(state.resolved, option);
+    state.resolved = omit(state.resolved, option);
 
     return this;
   }
@@ -196,7 +199,7 @@ export default function createResolver() {
       state.allowedTypes[option] = [...state.allowedTypes[option], ...types];
     }
 
-    state.resolved = _.omit(state.resolved, option);
+    state.resolved = omit(state.resolved, option);
 
     return this;
   }
@@ -206,14 +209,14 @@ export default function createResolver() {
       throw new Error('Options cannot be removed from a lazy option or normalizer.');
     }
 
-    state.defined       = _.omit(state.defined, optionNames);
-    state.defaults      = _.omit(state.defaults, optionNames);
-    state.required      = _.omit(state.required, optionNames);
-    state.resolved      = _.omit(state.resolved, optionNames);
-    state.lazy          = _.omit(state.lazy, optionNames);
-    state.normalizers   = _.omit(state.normalizers, optionNames);
-    state.allowedValues = _.omit(state.allowedValues, optionNames);
-    state.allowedTypes  = _.omit(state.allowedTypes, optionNames);
+    state.defined       = omit(state.defined, optionNames);
+    state.defaults      = omit(state.defaults, optionNames);
+    state.required      = omit(state.required, optionNames);
+    state.resolved      = omit(state.resolved, optionNames);
+    state.lazy          = omit(state.lazy, optionNames);
+    state.normalizers   = omit(state.normalizers, optionNames);
+    state.allowedValues = omit(state.allowedValues, optionNames);
+    state.allowedTypes  = omit(state.allowedTypes, optionNames);
 
     return this;
   }
@@ -240,7 +243,7 @@ export default function createResolver() {
     return new Promise((resolve, reject) => {
 
       function throwError(err, args) {
-        if (_.isFunction(callback)) {
+        if (lang.isFunction(callback)) {
           return callback(err, args);
         }
 
@@ -252,23 +255,23 @@ export default function createResolver() {
         return throwError(err);
       }
 
-      clone = _.clone(state, true);
-      const definedDiff = _.difference(Object.keys(options), Object.keys(clone.defined));
+      clone = lang.clone(state, true);
+      const definedDiff = difference(Object.keys(options), Object.keys(clone.defined));
 
       if (definedDiff.length) {
-        const definedKeys = _.sortBy(Object.keys(clone.defined)).join('", "');
-        const diffKeys = _.sortBy(definedDiff).join('", "');
+        const definedKeys = sortBy(Object.keys(clone.defined)).join('", "');
+        const diffKeys = sortBy(definedDiff).join('", "');
         const err = `The option(s) "${diffKeys}" do not exist. Defined options are: "${definedKeys}"`;
         return throwError(err);
       }
 
-      clone.defaults = _.merge(clone.defaults, options);
-      clone.resolved = _.omit(clone.resolved, Object.keys(options));
-      clone.lazy = _.omit(clone.lazy, options);
+      clone.defaults = merge(clone.defaults, options);
+      clone.resolved = omit(clone.resolved, Object.keys(options));
+      clone.lazy = omit(clone.lazy, options);
 
-      const requiredDiff = _.difference(Object.keys(clone.required), Object.keys(clone.defaults));
+      const requiredDiff = difference(Object.keys(clone.required), Object.keys(clone.defaults));
       if (requiredDiff.length) {
-        const diffKeys = _.sortBy(requiredDiff).join('", "');
+        const diffKeys = sortBy(requiredDiff).join('", "');
         const err = `The required options "${diffKeys}" are missing`;
         return throwError(err);
       }
@@ -278,10 +281,10 @@ export default function createResolver() {
         get(option);
       }
 
-      const resolved = _.clone(clone.resolved, true);
+      const resolved = lang.clone(clone.resolved, true);
       clone = {locked: false};
 
-      if (_.isFunction(callback)) {
+      if (lang.isFunction(callback)) {
         return callback(undefined, resolved);
       }
 
@@ -316,8 +319,8 @@ export default function createResolver() {
 
       for (const allowedType of clone.allowedTypes[option]) {
         var functionName = 'is' + allowedType.charAt(0).toUpperCase() + allowedType.substr(1).toLowerCase();
-        if (_.hasOwnProperty(functionName)) {
-          if (_[functionName](value)) {
+        if (lang.hasOwnProperty(functionName)) {
+          if (lang[functionName](value)) {
             valid = true;
             break;
           }
@@ -343,7 +346,7 @@ export default function createResolver() {
       let printableAllowedValues = [];
 
       for (const allowedValue of clone.allowedValues[option]) {
-        if (_.isFunction(allowedValue)) {
+        if (lang.isFunction(allowedValue)) {
           if (allowedValue(value)) {
             success = true;
             break;
@@ -380,7 +383,7 @@ export default function createResolver() {
       try {
         value = normalizer(value);
       } finally {
-        clone.calling = _.omit(clone.calling, option);
+        clone.calling = omit(clone.calling, option);
       }
     }
 
