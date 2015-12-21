@@ -34,9 +34,9 @@ export default function createResolver() {
   }
 
   function setDefaults(defaults) {
-    _.forEach(defaults, (value, option) => {
-      setDefault(option, value);
-    });
+    for (const option of Object.keys(defaults)) {
+      setDefault(option, defaults[option]);
+    }
 
     return this;
   }
@@ -54,10 +54,10 @@ export default function createResolver() {
       optionNames = [optionNames];
     }
 
-    _.forEach(optionNames, (option) => {
+    for (const option of optionNames) {
       state.defined[option] = true;
       state.required[option] = true;
-    });
+    }
 
     return this;
   }
@@ -88,9 +88,9 @@ export default function createResolver() {
       optionNames = [optionNames];
     }
 
-    _.forEach(optionNames, (option) => {
-      state.defined[option]= true;
-    });
+    for (const option of optionNames) {
+      state.defined[option] = true;
+    }
 
     return this;
   }
@@ -274,7 +274,7 @@ export default function createResolver() {
       }
 
       clone.locked = true;
-      for (const option in clone.defaults) {
+      for (const option of Object.keys(clone.defaults)) {
         get(option);
       }
 
@@ -314,7 +314,7 @@ export default function createResolver() {
       && null !== clone.allowedTypes[option]) {
       let valid = false;
 
-      for (let allowedType of clone.allowedTypes[option]) {
+      for (const allowedType of clone.allowedTypes[option]) {
         var functionName = 'is' + allowedType.charAt(0).toUpperCase() + allowedType.substr(1).toLowerCase();
         if (_.hasOwnProperty(functionName)) {
           if (_[functionName](value)) {
@@ -342,7 +342,7 @@ export default function createResolver() {
       let success = false;
       let printableAllowedValues = [];
 
-      for (let allowedValue of clone.allowedValues[option]) {
+      for (const allowedValue of clone.allowedValues[option]) {
         if (_.isFunction(allowedValue)) {
           if (allowedValue(value)) {
             success = true;
