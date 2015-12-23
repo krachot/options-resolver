@@ -1,6 +1,6 @@
 {
   "name": "options-resolver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Port of Symfony component OptionsResolver. This library processes and validates option object",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
