@@ -239,20 +239,11 @@ export default function createResolver() {
     return this;
   }
 
-  function resolve(options = {}, callback) {
+  function resolve(options = {}) {
     return new Promise((resolve, reject) => {
-
-      function throwError(err, args) {
-        if (lang.isFunction(callback)) {
-          return callback(err, args);
-        }
-
-        return reject(err);
-      }
-
       if (state.locked) {
         const err = new Error('Options cannot be state.resolved from a lazy option or normalizer.');
-        return throwError(err);
+        return reject(err);
       }
 
       clone = lang.clone(state, true);
@@ -262,7 +253,7 @@ export default function createResolver() {
         const definedKeys = sortBy(Object.keys(clone.defined)).join('", "');
         const diffKeys = sortBy(definedDiff).join('", "');
         const err = `The option(s) "${diffKeys}" do not exist. Defined options are: "${definedKeys}"`;
-        return throwError(err);
+        return reject(err);
       }
 
       clone.defaults = merge(clone.defaults, options);
@@ -273,7 +264,7 @@ export default function createResolver() {
       if (requiredDiff.length) {
         const diffKeys = sortBy(requiredDiff).join('", "');
         const err = `The required options "${diffKeys}" are missing`;
-        return throwError(err);
+        return reject(err);
       }
 
       clone.locked = true;
@@ -283,10 +274,6 @@ export default function createResolver() {
 
       const resolved = lang.clone(clone.resolved, true);
       clone = {locked: false};
-
-      if (lang.isFunction(callback)) {
-        return callback(undefined, resolved);
-      }
 
       resolve(resolved);
     });
