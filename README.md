@@ -1,6 +1,7 @@
 # OptionsResolver
 
 This is a port of awesome Symfony component OptionsResolver.
+This library processes and validates option object.
 
 [![Build Status](https://travis-ci.org/krachot/options-resolver.svg?branch=master)](https://travis-ci.org/krachot/options-resolver)
 
@@ -47,10 +48,11 @@ npm run test
 ## TODO
 
 * Improve documentation
+* Add Express middleware
 
 ## Release History
 
-* 0.1.0 Initial release
+* 1.0.0 First release
 
 
 
