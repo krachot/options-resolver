@@ -1,23 +1,51 @@
 {
   "name": "options-resolver",
   "version": "1.0.0",
-  "description": "",
+  "description": "Port of Symfony component OptionsResolver. This library processes and validates option object",
   "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
   "scripts": {
+    "clean": "rimraf lib",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive",
     "test:watch": "npm run test -- --watch",
-    "babel": "babel src --out-dir lib"
+    "babel": "babel src --out-dir lib",
+    "build": "npm run babel",
+    "version": "npm run build",
+    "prepublish": "npm run clean && npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krachot/options-resolver.git"
+  },
+  "keywords": [
+    "options",
+    "option",
+    "resolver",
+    "processes",
+    "validates",
+    "config",
+    "configuration"
+  ],
+  "authors": [
+    "Matthieu Bozec <matthieu@bozec.org> (https://matthieu.bozec.org)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krachot/options-resolver/issues"
+  },
+  "homepage": "https://github.com/krachot/options-resolver",
   "devDependencies": {
     "babel-cli": "^6.1.4",
     "babel-core": "^6.1.4",
     "babel-preset-es2015": "^6.1.4",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "rimraf": "^2.4.5"
   },
   "babel": {
     "presets": [
@@ -26,5 +54,6 @@
   },
   "dependencies": {
     "lodash": "^3.10.1"
-  }
+  },
+  "npmName": "options-resolver"
 }
